@@ -1,5 +1,5 @@
 # TitanHelpApplication
-Team name: Titan Developers
+Team name: Code Ninjas
 By Matthew Watkins, Andrian Diaz, Kenneth Fafrak IV 
 (c) 2026 ALL RIGHTS RESERVED BY DEVELOPERS.
 
