@@ -1,8 +1,40 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<TitanHelpApplication.Models.Ticket>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center my-4">
+        <h1>Support Tickets</h1>
+        <a asp-action="Create" class="btn btn-primary">Create New Ticket</a>
+    </div>
+
+    <div class="table-responsive shadow-sm">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Requester</th>
+                    <th>Date</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td><strong>@item.Name</strong></td>
+                        <td>@item.Date.ToString("MM/dd/yyyy")</td>
+                        <td>
+                            <span class="badge @(item.Priority == TicketPriority.High ? "bg-danger" : "bg-info")">
+                                @item.Priority
+                            </span>
+                        </td>
+                        <td><span class="badge bg-secondary">@item.Status</span></td>
+                        <td class="text-truncate" style="max-width: 200px;">@item.ProblemDescription</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
