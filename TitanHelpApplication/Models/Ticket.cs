@@ -10,7 +10,7 @@ namespace TitanHelpApplication.Models
 
         [Required(ErrorMessage = "Requester name is required")]
         [StringLength(100)]
-        public required string Name { get; set; } // Fixed with 'required'
+        public string Name { get; set; } = string.Empty;
 
         [Required]
         [Display(Name = "Date Created")]
@@ -19,12 +19,12 @@ namespace TitanHelpApplication.Models
         [Required(ErrorMessage = "Problem description is required")]
         [StringLength(1000)]
         [Display(Name = "Problem Description")]
-        public required string ProblemDescription { get; set; } // Fixed with 'required'
+        public string ProblemDescription { get; set; } = string.Empty;
 
         [Required]
-        public string Status { get; set; } = "Open"; // No error here because we gave it a default value ("Open")
+        public string Status { get; set; } = "Open";
 
-        [Required]
+        [Required(ErrorMessage = "Please select a priority level")]
         public TicketPriority Priority { get; set; }
     }
 
@@ -35,7 +35,5 @@ namespace TitanHelpApplication.Models
         High
     }
 }
-
-
 
 
