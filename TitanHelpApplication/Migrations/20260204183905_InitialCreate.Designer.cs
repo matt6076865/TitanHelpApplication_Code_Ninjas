@@ -10,8 +10,8 @@ using TitanHelpApplication.Data;
 
 namespace TitanHelpApplication.Migrations
 {
-    [DbContext(typeof(TitanHelpApplicationContext))]
-    [Migration("20260201175619_InitialCreate")]
+    [DbContext(typeof(TicketDbContext))]
+    [Migration("20260204183905_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -48,7 +48,7 @@ namespace TitanHelpApplication.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ticket");
+                    b.ToTable("Tickets", (string)null);
                 });
 #pragma warning restore 612, 618
         }

@@ -8,7 +8,6 @@ namespace TitanHelpApplication.Controllers
     {
         private readonly ITicketService _ticketService;
 
-        // Dependency Injection: Bringing in the Business Logic layer
         public TicketController(ITicketService ticketService)
         {
             _ticketService = ticketService;
@@ -24,20 +23,24 @@ namespace TitanHelpApplication.Controllers
         // GET: Ticket/Create
         public IActionResult Create()
         {
-            return View();
+            // Optional: Set a default date for the new ticket
+            var newTicket = new Ticket { Date = DateTime.Now };
+            return View(newTicket);
         }
 
         // POST: Ticket/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Ticket ticket)
+        // Updated [Bind] to match your database columns: Name, Date, ProblemDescription, Status, Priority
+        public IActionResult Create([Bind("Id,Name,Date,ProblemDescription,Status,Priority")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
                 _ticketService.AddTicket(ticket);
                 return RedirectToAction(nameof(Index));
             }
-            // If validation fails, return to the form with errors
+
+            // If we got this far, something failed, redisplay form
             return View(ticket);
         }
     }

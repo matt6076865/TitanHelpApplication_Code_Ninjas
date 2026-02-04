@@ -14,8 +14,11 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddControllersWithViews();
 
 // Register the Database
+// Change this line:
 builder.Services.AddDbContext<TicketDbContext>(options =>
-    options.UseSqlite(connectionString));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ??
+    throw new InvalidOperationException("Connection string 'TicketDbContext' not found.")));
+builder.Services.AddControllersWithViews();
 
 // Register your Service (The Brain)
 builder.Services.AddScoped<ITicketService, TicketService>();
