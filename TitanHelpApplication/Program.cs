@@ -1,46 +1,48 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using TitanHelpApplication.Data;
-//using TitanHelpApplication.Data;
+using TitanHelpApplication.Services;
+using TitanHelpApplication.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<TitanHelpApplicationContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("TitanHelpApplicationContext") ?? throw new InvalidOperationException("Connection string 'TitanHelpApplicationContext' not found.")));
 
-// Add services to the container.
+// --- 1. CONFIGURATION ---
+// Get the connection string from appsettings.json
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+                      ?? "Data Source=TitanHelp.db";
+
+// --- 2. SERVICE REGISTRATION (Must be BEFORE builder.Build) ---
 builder.Services.AddControllersWithViews();
 
+// Register the Database
+// Change this line:
+builder.Services.AddDbContext<TicketDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ??
+    throw new InvalidOperationException("Connection string 'TicketDbContext' not found.")));
+builder.Services.AddControllersWithViews();
+
+// Register your Service (The Brain)
+builder.Services.AddScoped<ITicketService, TicketService>();
+
+// --- 3. BUILD THE APP ---
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// --- 4. MIDDLEWARE (The Request Pipeline) ---
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseRouting();
-
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-//builder.Services.AddDbContext<TicketDbContext>(options =>
-//    options.UseSqlite(connectionString));
-
 app.UseAuthorization();
 
-app.MapStaticAssets();
-
+// --- 5. ROUTING ---
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
+    pattern: "{controller=Ticket}/{action=Index}/{id?}");
 
 app.Run();
-
-
-
 
 

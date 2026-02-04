@@ -1,0 +1,43 @@
+﻿@model TitanHelpApplication.Models.Ticket
+
+<div class="container col-md-6 mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Submit New Help Request</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label font-weight-bold"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Your Full Name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Priority" class="form-label font-weight-bold"></label>
+                    <select asp-for="Priority" asp-items="Html.GetEnumSelectList<TicketPriority>()" class="form-select">
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ProblemDescription" class="form-label font-weight-bold"></label>
+                    <textarea asp-for="ProblemDescription" class="form-control" rows="4" placeholder="Describe the issue..."></textarea>
+                    <span asp-validation-for="ProblemDescription" class="text-danger"></span>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success">Create Ticket</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

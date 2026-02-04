@@ -9,8 +9,8 @@ using TitanHelpApplication.Data;
 
 namespace TitanHelpApplication.Migrations
 {
-    [DbContext(typeof(TitanHelpApplicationContext))]
-    partial class TitanHelpApplicationContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(TicketDbContext))]
+    partial class TicketDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -45,7 +45,7 @@ namespace TitanHelpApplication.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ticket");
+                    b.ToTable("Tickets", (string)null);
                 });
 #pragma warning restore 612, 618
         }
