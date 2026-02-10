@@ -1,14 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TitanHelpApplication.Data;
-//using TitanHelpApplication.Data;
+using TitanHelpApplication.Repositories;
+
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<TitanHelpApplicationContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("TitanHelpApplicationContext") ?? throw new InvalidOperationException("Connection string 'TitanHelpApplicationContext' not found.")));
+// Configure the database context to use SQLite
+// This tells the app: "When anyone asks for TicketDbContext, give them this SQLite connection."
+builder.Services.AddDbContext<TicketDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=TitanHelp.db")); //may have to del later
+//?? throw new InvalidOperationException("Connection string 'TitanHelpApplicationContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Register the Repository (Data Layer)
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+//awaiting SereviceLayer builder.Services.AddScoped<ITicketService, TicketService>();
 
 var app = builder.Build();
 
@@ -24,9 +32,6 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-//builder.Services.AddDbContext<TicketDbContext>(options =>
-//    options.UseSqlite(connectionString));
 
 app.UseAuthorization();
 

@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TitanHelpApplication.Data;
 
@@ -10,12 +9,10 @@ using TitanHelpApplication.Data;
 
 namespace TitanHelpApplication.Migrations
 {
-    [DbContext(typeof(TitanHelpApplicationContext))]
-    [Migration("20260201175619_InitialCreate")]
-    partial class InitialCreate
+    [DbContext(typeof(TicketDbContext))]
+    partial class TicketDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.2");
@@ -34,8 +31,9 @@ namespace TitanHelpApplication.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Priority")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ProblemDescription")
                         .IsRequired()
@@ -49,6 +47,26 @@ namespace TitanHelpApplication.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Ticket");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Date = new DateTime(2026, 2, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Alice Smith",
+                            Priority = "Medium",
+                            ProblemDescription = "Printer jammed",
+                            Status = "Open"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Date = new DateTime(2026, 2, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Bob Jones",
+                            Priority = "High",
+                            ProblemDescription = "Email login failed",
+                            Status = "Open"
+                        });
                 });
 #pragma warning restore 612, 618
         }

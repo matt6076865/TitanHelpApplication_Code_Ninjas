@@ -6,14 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TitanHelpApplication.Data;
+using TitanHelpApplication.Models;
 
-namespace TitanHelpApplication.Models
+namespace TitanHelpApplication.Controllers
 {
     public class TicketsController : Controller
     {
-        private readonly TitanHelpApplicationContext _context;
+        private readonly TicketDbContext _context;
 
-        public TicketsController(TitanHelpApplicationContext context)
+        public TicketsController(TicketDbContext context)
         {
             _context = context;
         }
