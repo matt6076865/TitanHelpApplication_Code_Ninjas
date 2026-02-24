@@ -1,32 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TitanHelpApplication.Data;
 using TitanHelpApplication.Services;
-using TitanHelpApplication.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- 1. CONFIGURATION ---
-// Get the connection string from appsettings.json
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-                      ?? "Data Source=TitanHelp.db";
+// --- 1. CONFIGURATION & SERVICE REGISTRATION ---
 
-// --- 2. SERVICE REGISTRATION (Must be BEFORE builder.Build) ---
+// Register controllers and views
 builder.Services.AddControllersWithViews();
 
 // Register the Database
-// Change this line:
 builder.Services.AddDbContext<TicketDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ??
-    throw new InvalidOperationException("Connection string 'TicketDbContext' not found.")));
-builder.Services.AddControllersWithViews();
+        "Data Source=TitanHelp.db"));
 
-// Register your Service (The Brain)
+// Register your Service (The Brain - Dependency Injection)
 builder.Services.AddScoped<ITicketService, TicketService>();
 
-// --- 3. BUILD THE APP ---
+// --- 2. BUILD THE APP ---
 var app = builder.Build();
 
-// --- 4. MIDDLEWARE (The Request Pipeline) ---
+// --- 3. MIDDLEWARE (The Request Pipeline) ---
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -38,11 +32,10 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 
-// --- 5. ROUTING ---
+// --- 4. ROUTING ---
+// Updated default controller to 'Tickets' instead of 'Ticket'
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Ticket}/{action=Index}/{id?}");
+    pattern: "{controller=Tickets}/{action=Index}/{id?}");
 
 app.Run();
-
-

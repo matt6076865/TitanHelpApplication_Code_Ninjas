@@ -1,6 +1,8 @@
 ﻿using TitanHelpApplication.Models;
 using TitanHelpApplication.Data;
-using System.Linq;
+using Microsoft.EntityFrameworkCore; // Needed for ToListAsync
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace TitanHelpApplication.Services
 {
@@ -13,16 +15,39 @@ namespace TitanHelpApplication.Services
             _context = context;
         }
 
-        // ERROR FIX: Use { } brackets, NOT a semicolon ;
-        public IEnumerable<Ticket> GetAllTickets()
+        public async Task<IEnumerable<Ticket>> GetAllTicketsAsync()
         {
-            return _context.Tickets.ToList();
+            // Await the database call so the server thread is free to do other things
+            return await _context.Tickets.ToListAsync();
         }
 
-        public void AddTicket(Ticket ticket)
+        public async Task AddTicketAsync(Ticket ticket)
         {
             _context.Tickets.Add(ticket);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+        }
+
+        // The method returns a nullable Ticket (Ticket?) because the ticket with the specified ID might not exist
+        public async Task<Ticket?> GetTicketByIdAsync(int id)
+        {
+            // Finds a specific ticket by its primary key
+            return await _context.Tickets.FindAsync(id);
+        }
+
+        public async Task UpdateTicketAsync(Ticket ticket)
+        {
+            _context.Tickets.Update(ticket);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteTicketAsync(int id)
+        {
+            var ticket = await _context.Tickets.FindAsync(id);
+            if (ticket != null)
+            {
+                _context.Tickets.Remove(ticket);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
