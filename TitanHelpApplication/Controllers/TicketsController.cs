@@ -33,7 +33,7 @@ namespace TitanHelpApplication.Controllers
         // POST: Tickets/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TicketCreateDTO ticketDto)
+        public async Task<IActionResult> Create(Ticket ticketDto)
         {
             if (ModelState.IsValid)
             {
@@ -42,7 +42,7 @@ namespace TitanHelpApplication.Controllers
                     Name = ticketDto.Name,
                     ProblemDescription = ticketDto.ProblemDescription,
                     Priority = ticketDto.Priority,
-                    Date = DateTime.Now,
+                    Date = ticketDto.Date,
                     Status = "Open"
                 };
 
