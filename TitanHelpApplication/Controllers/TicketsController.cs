@@ -43,7 +43,7 @@ namespace TitanHelpApplication.Controllers
                     ProblemDescription = ticketDto.ProblemDescription,
                     Priority = ticketDto.Priority,
                     Date = ticketDto.Date,
-                    Status = "Open"
+                    Status = ticketDto.Status,
                 };
 
                 await _ticketService.AddTicketAsync(newTicket);
